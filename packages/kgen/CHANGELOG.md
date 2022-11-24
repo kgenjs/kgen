@@ -1,5 +1,11 @@
 # @kgen/core
 
+## 0.0.3
+
+### Patch Changes
+
+- Added `prompts` types to dependencies.
+
 ## 0.0.2
 
 ### Patch Changes
