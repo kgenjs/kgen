@@ -7,6 +7,6 @@
     "outDir": "./dist",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["packages/kgen/src/**/*", ".eslintrc.js"],
+  "include": [".eslintrc.js"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
