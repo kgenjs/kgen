@@ -12,7 +12,6 @@
   "devDependencies": {
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^8.0.0",
-    "@types/prompts": "^2.4.1",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
     "eslint": "^7.32.0 || ^8.2.0",
@@ -31,6 +30,7 @@
     "chalk": "^5.1.2",
     "fs-extra": "^10.1.0",
     "globby": "^13.1.2",
-    "prompts": "^2.4.2"
+    "prompts": "^2.4.2",
+    "@types/prompts": "^2.4.1"
   }
 }
