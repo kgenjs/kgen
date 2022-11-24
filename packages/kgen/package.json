@@ -1,13 +1,14 @@
 {
-  "name": "@kgen/monorepo",
-  "private": true,
-  "version": "1.0.0",
+  "name": "@kgen/core",
+  "version": "0.0.0",
   "description": "A Node.js project generator.",
+  "main": "dist/index.js",
   "scripts": {
-    "cli": "node ./dist/cli.js"
+    "dev": "tsc -w",
+    "start": "node ./dist/index.js",
+    "clean": "rm -rf ./dist"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.25.2",
     "@types/fs-extra": "^9.0.13",
     "@types/glob": "^8.0.0",
     "@types/prompts": "^2.4.1",
@@ -26,6 +27,9 @@
   "type": "module",
   "license": "MIT",
   "dependencies": {
-    "@kgen/core": "workspace:*"
+    "chalk": "^5.1.2",
+    "fs-extra": "^10.1.0",
+    "globby": "^13.1.2",
+    "prompts": "^2.4.2"
   }
 }
