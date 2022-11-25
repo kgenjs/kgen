@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "A Node.js project generator.",
   "scripts": {
-    "cli": "node ./dist/cli.js"
+    "build:all": "pnpm run build -r"
   },
   "devDependencies": {
     "@changesets/cli": "^2.25.2",
@@ -20,7 +20,8 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "^2.7.1",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "npm-run-all": "^4.1.5"
   },
   "author": "Sam Zhang",
   "type": "module",

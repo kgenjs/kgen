@@ -22,7 +22,6 @@ program
     const templateName = `${template.split('/')[0]}-${template.split('/')[1]}`;
     const templatePath = path.join(__dirname, '../templates', templateName);
     const options = program.opts();
-    console.log(options);
     if (!fs.existsSync(templatePath) || options.fresh) {
       await downloadTemplate(template);
     }
