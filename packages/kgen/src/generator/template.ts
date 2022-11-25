@@ -4,16 +4,15 @@ import * as path from 'path';
 import { GenerateResult } from '.';
 
 export type OverrideTemplate = {
-  filepath: string;
-  content: string;
+  [filepath: string]: string;
 };
 
 type IgnoreChecker = (filepath: string) => boolean | Promise<boolean>;
 
 export type CreateTemplateOptions = {
   template: string;
-  overrides?: OverrideTemplate[];
-  ignore?: string | IgnoreChecker;
+  overrides?: OverrideTemplate;
+  ignore?: string | string[] | IgnoreChecker;
 };
 
 type WalkDirCallback = (props: { filepath: string; fullFilepath: string; isDir: boolean }) => void;
@@ -33,7 +32,7 @@ const walkDir = (target: string, base: string, callback: WalkDirCallback) => {
 
 export const createFromTemplate = async (
   targetPath: string,
-  { template: templatePath, overrides = [], ignore: userIgnore }: CreateTemplateOptions,
+  { template: templatePath, overrides = {}, ignore: userIgnore }: CreateTemplateOptions,
 ): Promise<GenerateResult> => {
   if (fs.existsSync(targetPath)) {
     return {
@@ -44,7 +43,7 @@ export const createFromTemplate = async (
 
   let ignore: string[] | IgnoreChecker = [];
 
-  if (typeof userIgnore === 'string') {
+  if (typeof userIgnore === 'string' || Array.isArray(userIgnore)) {
     ignore = await globby(userIgnore, {
       cwd: templatePath,
     });
@@ -68,18 +67,18 @@ export const createFromTemplate = async (
     });
 
     await Promise.all(
-      overrides.map(async (override) => {
+      Object.entries(overrides).map(async ([overridePath, content]) => {
         if (
           (
-            await globby(override.filepath, {
+            await globby(overridePath, {
               cwd: templatePath,
             })
           ).includes(filepath)
         ) {
-          if (typeof override.content !== 'string') {
-            fileContent = JSON.stringify(override.content);
+          if (typeof content !== 'string') {
+            fileContent = JSON.stringify(content, null, 2);
           } else {
-            fileContent = override.content;
+            fileContent = content;
           }
         }
       }),

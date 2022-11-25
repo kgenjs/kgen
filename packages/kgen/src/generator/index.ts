@@ -8,3 +8,4 @@ export type GenerateResult =
     };
 
 export { createFromTemplate } from './template.js';
+export { loadPlainTextConfig, loadJSONConfig, loadYAMLConfig, mergeConfig } from './config.js';

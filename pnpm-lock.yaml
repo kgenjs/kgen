@@ -56,15 +56,44 @@ importers:
       prettier: ^2.7.1
       prompts: ^2.4.2
       typescript: ^4.8.4
+      yaml: ^2.1.3
     dependencies:
+      '@types/prompts': 2.4.1
       chalk: 5.1.2
       fs-extra: 10.1.0
       globby: 13.1.2
       prompts: 2.4.2
+      yaml: 2.1.3
     devDependencies:
       '@types/fs-extra': 9.0.13
       '@types/glob': 8.0.0
-      '@types/prompts': 2.4.1
+      '@typescript-eslint/eslint-plugin': 5.43.0_6c13c08efc22ad2f80829ce4a7a0fc7e
+      '@typescript-eslint/parser': 5.43.0_eslint@8.28.0+typescript@4.9.3
+      eslint: 8.28.0
+      eslint-config-airbnb-base: 15.0.0_54e241786f5978d75bcd5845e1fbe921
+      eslint-config-airbnb-typescript: 17.0.0_8e356ef35a71c1380730f16781ce9556
+      eslint-config-prettier: 8.5.0_eslint@8.28.0
+      eslint-plugin-import: 2.26.0_eslint@8.28.0
+      eslint-plugin-prettier: 4.2.1_79af4407911fec8c30aa99c112f7039f
+      prettier: 2.7.1
+      typescript: 4.9.3
+
+  packages/template-vanilla:
+    specifiers:
+      '@kgen/core': workspace:*
+      '@typescript-eslint/eslint-plugin': ^5.42.0
+      '@typescript-eslint/parser': ^5.42.0
+      eslint: ^7.32.0 || ^8.2.0
+      eslint-config-airbnb-base: ^15.0.0
+      eslint-config-airbnb-typescript: ^17.0.0
+      eslint-config-prettier: ^8.5.0
+      eslint-plugin-import: ^2.25.2
+      eslint-plugin-prettier: ^4.2.1
+      prettier: ^2.7.1
+      typescript: ^4.8.4
+    dependencies:
+      '@kgen/core': link:../kgen
+    devDependencies:
       '@typescript-eslint/eslint-plugin': 5.43.0_6c13c08efc22ad2f80829ce4a7a0fc7e
       '@typescript-eslint/parser': 5.43.0_eslint@8.28.0+typescript@4.9.3
       eslint: 8.28.0
@@ -405,7 +434,6 @@ packages:
 
   /@types/node/18.11.9:
     resolution: {integrity: sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==}
-    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -415,7 +443,6 @@ packages:
     resolution: {integrity: sha512-1Mqzhzi9W5KlooNE4o0JwSXGUDeQXKldbGn9NO4tpxwZbHXYd+WcKpCksG2lbhH7U9I9LigfsdVsP2QAY0lNPA==}
     dependencies:
       '@types/node': 18.11.9
-    dev: true
 
   /@types/semver/6.2.3:
     resolution: {integrity: sha512-KQf+QAMWKMrtBMsB8/24w53tEsxllMj6TuA80TT/5igJalLI/zm0L3oXRbIAl4Ohfc85gyHX/jhMwsVkmhLU4A==}
@@ -2621,6 +2648,11 @@ packages:
   /yallist/4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}
     dev: true
+
+  /yaml/2.1.3:
+    resolution: {integrity: sha512-AacA8nRULjKMX2DvWvOAdBZMOfQlypSFkjcOcu9FalllIDJ1kvlREzcdIZmidQUqqeMv7jorHjq2HlLv/+c2lg==}
+    engines: {node: '>= 14'}
+    dev: false
 
   /yargs-parser/18.1.3:
     resolution: {integrity: sha512-o50j0JeToy/4K6OZcaQmW6lyXXKhq7csREXcDwk2omFPJEwUNOVtJKvmDr9EI1fAJZUyZcRF7kxGBWmRXudrCQ==}

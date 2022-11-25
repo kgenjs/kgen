@@ -6,7 +6,7 @@ export const createFromTemplate = async (targetPath: string, options: CreateTemp
   const timer = Date.now();
   const result = await generateTemplate(targetPath, options);
   if (result.status === 'success') {
-    log(`Template generated successfully in ${Date.now() - timer}s.`);
+    log(`Template generated successfully in ${(Date.now() - timer) / 1000}s.`);
     return;
   }
   log(result.msg, {
@@ -16,3 +16,9 @@ export const createFromTemplate = async (targetPath: string, options: CreateTemp
 
 export { log, LogOptions } from './logger.js';
 export { default as getPrompt } from './prompts/index.js';
+export {
+  loadPlainTextConfig,
+  loadJSONConfig,
+  loadYAMLConfig,
+  mergeConfig,
+} from './generator/index.js';
