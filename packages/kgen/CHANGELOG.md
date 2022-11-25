@@ -1,5 +1,11 @@
 # @kgen/core
 
+## 0.0.4
+
+### Patch Changes
+
+- Added config utils.
+
 ## 0.0.3
 
 ### Patch Changes
