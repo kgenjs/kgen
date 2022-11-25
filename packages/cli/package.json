@@ -1,6 +1,6 @@
 {
   "name": "@kgen/cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A Node.js project generator.",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
