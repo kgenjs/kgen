@@ -77,7 +77,7 @@ export const downloadTemplate = async (template: string) => {
   const repo = `kgen-template-${template.split('/')[1]}`;
   process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-  const { downloadHost } = config;
+  const { downloadHost = 'https://github.com' } = config;
   const downloadURL = `${downloadHost}/${owner}/${repo}/archive/refs/heads/main.zip`;
   const archivePath = path.join(__dirname, `../templates/${owner}-${repo}.zip`);
   const destPath = path.join(__dirname, `../templates/`);
