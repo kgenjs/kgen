@@ -1,6 +1,6 @@
 # KGen
 
-Quickly bootstrap a modern Node.js project with extensionable templates.
+Quickly bootstrap a modern Node.js project with extensionble templates.
 
 ## Get started
 
