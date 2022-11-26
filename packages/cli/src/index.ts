@@ -80,10 +80,4 @@ program
     }),
   );
 
-program.exitOverride();
-
-try {
-  program.parse(process.argv);
-} catch (err) {
-  console.log('111', err.message);
-}
+program.parse(process.argv);
