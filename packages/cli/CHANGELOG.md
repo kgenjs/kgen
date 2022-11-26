@@ -1,5 +1,13 @@
 # @kgen/cli
 
+## 0.0.5
+
+### Patch Changes
+
+- Improved handling for edge cases.
+- Updated dependencies
+  - @kgen/core@0.0.6
+
 ## 0.0.4
 
 ### Patch Changes
