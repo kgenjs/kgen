@@ -1,5 +1,11 @@
 # @kgen/cli
 
+## 0.0.6
+
+### Patch Changes
+
+- Removed development code.
+
 ## 0.0.5
 
 ### Patch Changes
