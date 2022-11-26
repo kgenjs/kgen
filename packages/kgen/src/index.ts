@@ -5,6 +5,8 @@ import { log } from './logger.js';
 export const createFromTemplate = async (targetPath: string, options: CreateTemplateOptions) => {
   const timer = Date.now();
   const result = await generateTemplate(targetPath, options);
+  if (options.noConsole) return;
+  console.log();
   if (result.status === 'success') {
     log(`Template generated successfully in ${(Date.now() - timer) / 1000}s.`);
     return;

@@ -11,3 +11,7 @@ export const config = JSON.parse(
 export const saveConfig = () => {
   fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
 };
+
+if (!fs.existsSync(configFilePath)) {
+  saveConfig();
+}

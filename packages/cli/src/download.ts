@@ -1,11 +1,10 @@
 import Axios from 'axios';
 import * as fs from 'fs';
-import * as stream from 'stream';
+import JSZip from 'jszip';
 import * as path from 'path';
-import * as https from 'https';
+import * as stream from 'stream';
 import * as url from 'url';
 import { promisify } from 'util';
-import JSZip from 'jszip';
 import { config } from './config.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
@@ -15,22 +14,38 @@ const __dirname = path.dirname(__filename);
 
 const finished = promisify(stream.finished);
 
-export const downloadFile = async (fileUrl: string, dest: string): Promise<any> => {
+export type DownloadFileResult = {
+  status: 'success' | 'error';
+  msg: string;
+};
+
+export const downloadFile = async (fileUrl: string, dest: string): Promise<DownloadFileResult> => {
   if (fs.existsSync(dest)) {
     fs.rmSync(dest);
   }
   const writer = fs.createWriteStream(dest);
-  return Axios({
+
+  const response = await Axios({
     method: 'get',
     url: fileUrl,
     responseType: 'stream',
-    httpsAgent: new https.Agent({
-      rejectUnauthorized: false,
-    }),
-  }).then((response) => {
-    response.data.pipe(writer);
-    return finished(writer);
+    validateStatus: () => true,
   });
+
+  if (response.status === 404) {
+    return {
+      status: 'error',
+      msg: `Cannot find the target template with URL ${fileUrl}.`,
+    };
+  }
+
+  response.data.pipe(writer);
+  await finished(writer);
+
+  return {
+    status: 'success',
+    msg: 'Success.',
+  };
 };
 
 export const unzipFile = async (filepath: string, dest: string, folderName?: string) => {
@@ -72,19 +87,52 @@ export const unzipFile = async (filepath: string, dest: string, folderName?: str
   return zippedLocation;
 };
 
-export const downloadTemplate = async (template: string) => {
+export type DownloadTemplateResult =
+  | {
+      status: 'success';
+      loc: string;
+    }
+  | {
+      status: 'error';
+      msg: string;
+    };
+
+export const downloadTemplate = async (template: string): Promise<DownloadTemplateResult> => {
+  if (!template.includes('/')) {
+    throw new Error('Template string does not confirm template naming rule.');
+  }
+
   const owner = template.split('/')[0];
   const repo = `kgen-template-${template.split('/')[1]}`;
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
   const { downloadHost = 'https://github.com' } = config;
   const downloadURL = `${downloadHost}/${owner}/${repo}/archive/refs/heads/main.zip`;
   const archivePath = path.join(__dirname, `../templates/${owner}-${repo}.zip`);
   const destPath = path.join(__dirname, `../templates/`);
 
-  await downloadFile(downloadURL, archivePath);
+  let res = null;
+
+  try {
+    res = await downloadFile(downloadURL, archivePath);
+  } catch (e) {
+    return {
+      status: 'error',
+      msg: `Failed to download template from ${downloadURL}: ${e.message}`,
+    };
+  }
+
+  if (res.status === 'error') {
+    return {
+      status: 'error',
+      msg: res.msg,
+    };
+  }
+
   const loc = await unzipFile(archivePath, destPath, `${owner}-${template.split('/')[1]}`);
   fs.rmSync(archivePath);
 
-  return loc;
+  return {
+    status: 'success',
+    loc,
+  };
 };

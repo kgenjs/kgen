@@ -13,6 +13,7 @@ export type CreateTemplateOptions = {
   template: string;
   overrides?: OverrideTemplate;
   ignore?: string | string[] | IgnoreChecker;
+  noConsole?: boolean;
 };
 
 type WalkDirCallback = (props: { filepath: string; fullFilepath: string; isDir: boolean }) => void;
