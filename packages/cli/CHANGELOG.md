@@ -1,5 +1,11 @@
 # @kgen/cli
 
+## 0.0.7
+
+### Patch Changes
+
+- Updated CLI configuration.
+
 ## 0.0.6
 
 ### Patch Changes

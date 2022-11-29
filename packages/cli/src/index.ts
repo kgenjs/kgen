@@ -15,35 +15,47 @@ const __filename = url.fileURLToPath(import.meta.url);
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 const __dirname = path.dirname(__filename);
 
+const downloadTemplateCLI = async (template: string) => {
+  log(`Downloading ${template} from remote...`);
+  const res = await downloadTemplate(template);
+  if (res.status !== 'success') {
+    log(res.msg, {
+      level: 'error',
+    });
+    process.exit(1);
+  }
+  log(`Template ${template} downloaded successfully.`);
+};
+
 program.name('kgen');
 
 program
+  .command('download')
+  .argument('<template>', 'Template to download.')
+  .description('Download template to local machine.')
+  .action(actionRunner(downloadTemplateCLI));
+
+program
   .command('gen')
-  .argument('<template>')
+  .argument('<template>', 'Template to generate from.')
+  .argument('[dest]', 'Path to generate content to.')
   .description('Generate a Node.js project from template.')
   .option('-f, --fresh', 'download a fresh copy of template even if it exists')
   .action(
-    actionRunner(async (template: string, options) => {
+    actionRunner(async (template: string, userDest: string | undefined, options) => {
       const [owner, repo] = template.split('/');
       const templateName = `${owner}-${repo}`;
       const templatePath = path.join(__dirname, '../templates', templateName);
+      const dest = userDest ?? './';
 
       if (!fs.existsSync(templatePath) || options.fresh) {
-        log(`Downloading ${template} from remote...`);
-        const res = await downloadTemplate(template);
-        if (res.status !== 'success') {
-          log(res.msg, {
-            level: 'error',
-          });
-          process.exit(1);
-        }
-        log(`Template ${template} downloaded successfully.`);
+        await downloadTemplateCLI(template);
       }
 
       const templateConfig = loadJSONConfig(path.join(templatePath, 'kgenconfig.json'));
       const pkg = await import(path.join(templatePath, templateConfig.main));
       try {
-        await pkg.default();
+        await pkg.default(dest);
       } catch (err) {
         console.log();
         log(`Failed to generate from template ${template}.`, {

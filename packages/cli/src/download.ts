@@ -5,7 +5,7 @@ import * as path from 'path';
 import * as stream from 'stream';
 import * as url from 'url';
 import { promisify } from 'util';
-import { config } from './config.js';
+import { getConfig } from './config.js';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 const __filename = url.fileURLToPath(import.meta.url);
@@ -105,7 +105,7 @@ export const downloadTemplate = async (template: string): Promise<DownloadTempla
   const owner = template.split('/')[0];
   const repo = `kgen-template-${template.split('/')[1]}`;
 
-  const { downloadHost = 'https://github.com' } = config;
+  const downloadHost = getConfig('downloadHost');
   const downloadURL = `${downloadHost}/${owner}/${repo}/archive/refs/heads/main.zip`;
   const archivePath = path.join(__dirname, `../templates/${owner}-${repo}.zip`);
   const destPath = path.join(__dirname, `../templates/`);
