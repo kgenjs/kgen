@@ -100,7 +100,7 @@ export type DownloadTemplateResult =
 export const downloadTemplate = async (template: string): Promise<DownloadTemplateResult> => {
   // defaulting to `kgenjs` if no owner is provided
   const owner = template.includes('/') ? template.split('/')[0] : `kgenjs`;
-  const repo = template.includes('/') ? `kgen-template-${template.split('/')[1]}` : template;
+  const repo = `kgen-template-${template.includes('/') ? template.split('/')[1] : template}`;
 
   const downloadHost = getConfig('downloadHost');
   const downloadURL = `${downloadHost}/${owner}/${repo}/archive/refs/heads/main.zip`;
