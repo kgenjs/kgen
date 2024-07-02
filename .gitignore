@@ -3,3 +3,4 @@
 packages/cli/templates/**
 !**/.gitkeep
 .idea/
+**/._*
