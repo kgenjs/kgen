@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "A Node.js project generator.",
   "scripts": {
-    "build:all": "pnpm run build -r",
+    "build:all": "pnpm -r build",
     "release": "pnpm build:all && pnpm changeset && pnpm changeset version"
   },
   "devDependencies": {

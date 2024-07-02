@@ -98,12 +98,9 @@ export type DownloadTemplateResult =
     };
 
 export const downloadTemplate = async (template: string): Promise<DownloadTemplateResult> => {
-  if (!template.includes('/')) {
-    throw new Error('Template string does not confirm template naming rule.');
-  }
-
-  const owner = template.split('/')[0];
-  const repo = `kgen-template-${template.split('/')[1]}`;
+  // defaulting to `kgenjs` if no owner is provided
+  const owner = template.includes('/') ? template.split('/')[0] : `kgenjs`;
+  const repo = template.includes('/') ? `kgen-template-${template.split('/')[1]}` : template;
 
   const downloadHost = getConfig('downloadHost');
   const downloadURL = `${downloadHost}/${owner}/${repo}/archive/refs/heads/main.zip`;
@@ -115,6 +112,7 @@ export const downloadTemplate = async (template: string): Promise<DownloadTempla
   try {
     res = await downloadFile(downloadURL, archivePath);
   } catch (e) {
+    fs.rmSync(archivePath);
     return {
       status: 'error',
       msg: `Failed to download template from ${downloadURL}: ${e.message}`,
