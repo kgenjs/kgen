@@ -1,5 +1,11 @@
 # @kgen/cli
 
+## 0.0.10
+
+### Patch Changes
+
+- fix undefined repo name
+
 ## 0.0.9
 
 ### Patch Changes
