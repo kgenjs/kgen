@@ -1,5 +1,13 @@
 # @kgen/cli
 
+## 0.0.8
+
+### Patch Changes
+
+- default to `kgenjs` if no repo owner is provided
+- Updated dependencies
+  - @kgen/core@0.0.7
+
 ## 0.0.7
 
 ### Patch Changes
