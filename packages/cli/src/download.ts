@@ -126,7 +126,7 @@ export const downloadTemplate = async (template: string): Promise<DownloadTempla
     };
   }
 
-  const loc = await unzipFile(archivePath, destPath, `${owner}-${template.split('/')[1]}`);
+  const loc = await unzipFile(archivePath, destPath, `${owner}-${repo}`);
   fs.rmSync(archivePath);
 
   return {
