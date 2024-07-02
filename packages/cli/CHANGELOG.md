@@ -1,5 +1,11 @@
 # @kgen/cli
 
+## 0.0.9
+
+### Patch Changes
+
+- add template prefix for official templates
+
 ## 0.0.8
 
 ### Patch Changes
