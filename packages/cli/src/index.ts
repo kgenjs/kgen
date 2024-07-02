@@ -43,7 +43,7 @@ program
   .option('-f, --fresh', 'download a fresh copy of template even if it exists')
   .action(
     actionRunner(async (template: string, userDest: string | undefined, options) => {
-      const [owner, repo] = template.split('/');
+      const [owner, repo] = template.includes('/') ? template.split('/') : ['kgenjs', template];
       const templateName = `${owner}-${repo}`;
       const templatePath = path.join(__dirname, '../templates', templateName);
       const dest = userDest ?? './';

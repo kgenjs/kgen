@@ -1,5 +1,11 @@
 # @kgen/cli
 
+## 0.0.11
+
+### Patch Changes
+
+- fixed incorrect handling for official templates
+
 ## 0.0.10
 
 ### Patch Changes
