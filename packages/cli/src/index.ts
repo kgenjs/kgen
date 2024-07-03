@@ -39,37 +39,68 @@ program
   .command('gen')
   .argument('<template>', 'Template to generate from.')
   .argument('[dest]', 'Path to generate content to.')
-  .description('Generate a Node.js project from template.')
+  .description('Generate a project from template.')
   .option('-f, --fresh', 'download a fresh copy of template even if it exists')
+  .option('-l, --local', 'generate from local template')
   .action(
-    actionRunner(async (template: string, userDest: string | undefined, options) => {
-      const [owner, repo] = template.includes('/') ? template.split('/') : ['kgenjs', template];
-      const templateName = `${owner}-${repo}`;
-      const templatePath = path.join(__dirname, '../templates', templateName);
-      const dest = userDest ?? './';
+    actionRunner(
+      async (
+        template: string,
+        userDest: string | undefined,
+        options: { fresh: boolean; local: boolean },
+      ) => {
+        let templatePath = path.join(process.cwd(), template);
+        const dest = userDest ?? './';
+        let owner: string = '<undefined>';
+        let repo: string = '<undefined>';
 
-      if (!fs.existsSync(templatePath) || options.fresh) {
-        await downloadTemplateCLI(template);
-      }
+        if (!options.local) {
+          [owner, repo] = template.includes('/') ? template.split('/') : ['kgenjs', template];
+          const templateName = `${owner}-${repo}`;
+          templatePath = path.join(__dirname, '../templates', templateName);
 
-      const templateConfig = loadJSONConfig(path.join(templatePath, 'kgenconfig.json'));
-      const pkg = await import(path.join(templatePath, templateConfig.main));
-      try {
-        await pkg.default(dest);
-      } catch (err) {
-        console.log();
-        log(`Failed to generate from template ${template}.`, {
-          level: 'error',
-        });
-        console.log(
-          chalk.red(
-            'This is most likely due to an inner failure of target template generator, please',
-            `contact the template author to fix this issue. Template repository: https://github.com/${owner}/kgen-template-${repo}.`,
-          ),
+          if (!fs.existsSync(templatePath) || options.fresh) {
+            await downloadTemplateCLI(template);
+          }
+        }
+
+        const templateConfig = loadJSONConfig(path.join(templatePath, 'kgenconfig.json'));
+        const templateEntryPath = path.join(templatePath, templateConfig.main);
+        const generatorErrorColored = chalk.red(
+          'This is most likely due to an inner failure of target template generator, please',
+          options.local
+            ? `fix this issue by updating your local generator at ${templatePath}.`
+            : `contact the template author to fix this issue. Template repository: https://github.com/${owner}/kgen-template-${repo}.`,
         );
-        console.log(chalk.gray(typeof err === 'string' ? err : err.stack));
-      }
-    }),
+        if (!fs.existsSync(templateEntryPath)) {
+          console.log();
+          log(`Failed to generate from template ${template}.`, {
+            level: 'error',
+          });
+          console.log(
+            chalk.gray(
+              `Template entry file defined at ${path.join(
+                templatePath,
+                'kgenconfig.json',
+              )} was not found at ${templateEntryPath}, please check your template.`,
+            ),
+          );
+          console.log(generatorErrorColored);
+          return;
+        }
+        try {
+          const pkg = await import(templateEntryPath);
+          await pkg.default(dest);
+        } catch (err) {
+          console.log();
+          log(`Failed to generate from template ${template}.`, {
+            level: 'error',
+          });
+          console.log(chalk.gray(typeof err === 'string' ? err : err.stack));
+          console.log(generatorErrorColored);
+        }
+      },
+    ),
   );
 
 program
