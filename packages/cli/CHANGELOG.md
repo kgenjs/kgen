@@ -1,5 +1,11 @@
 # @kgen/cli
 
+## 0.0.12
+
+### Patch Changes
+
+- added local option when generating templates
+
 ## 0.0.11
 
 ### Patch Changes
